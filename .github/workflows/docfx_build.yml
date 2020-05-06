@@ -1,0 +1,22 @@
+name: DocFX Build
+on:
+  push:
+    branches:
+      - anurse/rearrange-for-gh-pages
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    steps:
+      # Check out the branch that triggered this workflow to the 'source' subdirectory
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          path: source
+      # Check out gh-pages branch to the 'docs' subdirectory
+      - name: Checkout docs
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: docs
+
