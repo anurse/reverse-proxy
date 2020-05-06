@@ -34,7 +34,7 @@ jobs:
       - name: Check for changes
         id: git-check
         run: |
-          $ErrorActionPreference = "Continue"
+          git status
           git diff-index --quiet HEAD --
           if ($LASTEXITCODE -eq 0) {
             Write-Host "::set-output name=modified:true"
