@@ -23,19 +23,14 @@ jobs:
       - name: Build docs
         run: "& ./eng/common/build.ps1 -restore -build -projects ./docs/docfx/docfx.csproj"
         working-directory: ./source
-      # Show the site
-      - name: Show site dir
-        run: Get-ChildItem ./source/docs/docfx/_site
-      # Clear the content of the docs repo, EXCEPT the '.git' directory.
-      # We're going to lay down new content and want old stuff removed
-      - name: Clear docs repo
-        run: Get-ChildItem -Force '$env:GITHUB_WORKSPACE/docs' | Where-Object { $_.Name -ne ".git" } | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
-      # Copy to the docs repo
-      - name: Copy to docs repo
-        run: Copy-Item -Recurse -Force "$env:GITHUB_WORKSPACE/source/docs/docfx/_site/*" "$env:GITHUB_WORKSPACE/docs"
-      # Show the copied site
-      - name: Show site dir
-        run: Get-ChildItem -Force ./docs
+      # Sync the site
+      - name: Sync site
+        run: |
+          tree '$env:GITHUB_WORKSPACE/docs'
+          Get-ChildItem -Force '$env:GITHUB_WORKSPACE/docs' | Where-Object { $_.Name -ne ".git" } | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
+          tree '$env:GITHUB_WORKSPACE/docs'
+          Copy-Item -Recurse -Force "$env:GITHUB_WORKSPACE/source/docs/docfx/_site/*" "$env:GITHUB_WORKSPACE/docs"
+          tree '$env:GITHUB_WORKSPACE/docs'
       # Commit
       - name: Commit to gh-pages and push
         run: |
@@ -44,8 +39,3 @@ jobs:
           git config --global user.email "$env:GITHUB_ACTOR@users.noreply.github.com"
           git commit -m"Updated docs from commit $env:GITHUB_SHA on $env:GITHUB_REF"
           git push origin gh-pages
-      # Push
-      - name: Push
-        run: |
-          cd "$env:GITHUB_WORKSPACE/docs"
-
