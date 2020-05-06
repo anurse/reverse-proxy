@@ -25,16 +25,16 @@ jobs:
         working-directory: ./source
       # Show the site
       - name: Show site dir
-        run: dir ./source/docs/docfx/_site
+        run: Get-ChildItem ./source/docs/docfx/_site
       # Clear the content of the docs repo, since we're going to lay down new content and want old stuff removed
       - name: Clear docs repo
-        run: Remove-Item -Recurse -Force ./docs/* -Exclude .git
+        run: Remove-Item -Recurse -Exclude .git/ -Force "$env:GITHUB_WORKSPACE/docs/*"
       # Copy to the docs repo
       - name: Copy to docs repo
-        run: Copy-Item -Recurse -Force ./source/docs/docfx/_site/* ./docs
+        run: Copy-Item -Recurse -Force "$env:GITHUB_WORKSPACE/source/docs/docfx/_site/*" "$env:GITHUB_WORKSPACE/docs"
       # Show the copied site
       - name: Show site dir
-        run: dir ./docs
+        run: Get-ChildItem -Force ./docs
       # Commit
       - name: Commit to gh-pages
         run: |
