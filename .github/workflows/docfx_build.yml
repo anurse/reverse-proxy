@@ -8,6 +8,9 @@ jobs:
     name: Build
     runs-on: windows-latest
     steps:
+      # Get the GitHub Actions user?
+      - name: Get GitHub Actions User
+        run: Invoke-WebRequest https://api.github.com/user -Headers @{"Authorization"="Bearer ${{ secrets.GITHUB_TOKEN }}"}
       # Check out the branch that triggered this workflow to the 'source' subdirectory
       - name: Checkout Code
         uses: actions/checkout@v2
