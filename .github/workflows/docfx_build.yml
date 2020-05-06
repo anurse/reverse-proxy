@@ -19,4 +19,12 @@ jobs:
         with:
           ref: gh-pages
           path: docs
+      # Run a build
+      - name: Build docs
+        run: "& ./eng/common/build.ps1 -restore -build -projects ./docs/docfx/docfx.csproj"
+        working-directory: ./source
+      # Show the site
+      - name: Show site dir
+        run: dir ./docs/docsfx/_site
+        working-directory: ./source
 
