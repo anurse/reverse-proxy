@@ -35,4 +35,17 @@ jobs:
       # Show the copied site
       - name: Show site dir
         run: dir ./docs
+      # Commit
+      - name: Commit to gh-pages
+        run: |
+          git config --global user.name "${GITHUB_ACTOR} (via Actions)"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git commit -m"Updated docs from commit ${GITHUB_SHA} on ${GITHUB_REF}"
+        working-directory: ./docs
+      # # Push
+      # - name: Push
+      #   run: |
+      #     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+      #     git push origin gh-pages
+      #   working-directory: ./docs
 
