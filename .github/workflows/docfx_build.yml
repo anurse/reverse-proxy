@@ -37,9 +37,9 @@ jobs:
           git status
           git diff-index --quiet HEAD --
           if ($LASTEXITCODE -eq 0) {
-            Write-Host "::set-output name=modified:false"
+            Write-Host "::set-output name=modified::false"
           } else {
-            Write-Host "::set-output name=modified:true"
+            Write-Host "::set-output name=modified::true"
           }
           # We need to clear last exit code because GitHub Actions auto-fails a task if the last exit code was non-zero
           $LASTEXITCODE = 0
