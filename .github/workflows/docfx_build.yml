@@ -26,9 +26,10 @@ jobs:
       # Show the site
       - name: Show site dir
         run: Get-ChildItem ./source/docs/docfx/_site
-      # Clear the content of the docs repo, since we're going to lay down new content and want old stuff removed
+      # Clear the content of the docs repo, EXCEPT the '.git' directory.
+      # We're going to lay down new content and want old stuff removed
       - name: Clear docs repo
-        run: Remove-Item -Recurse -Exclude .git/ -Force "$env:GITHUB_WORKSPACE/docs/*"
+        run: Get-ChildItem -Force '$env:GITHUB_WORKSPACE/docs' | Where-Object { $_.Name -ne ".git" } | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
       # Copy to the docs repo
       - name: Copy to docs repo
         run: Copy-Item -Recurse -Force "$env:GITHUB_WORKSPACE/source/docs/docfx/_site/*" "$env:GITHUB_WORKSPACE/docs"
