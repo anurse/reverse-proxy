@@ -27,9 +27,9 @@ jobs:
       - name: Sync site
         run: |
           tree .
-          Get-ChildItem -Force '$env:GITHUB_WORKSPACE/docs' | Where-Object { $_.Name -ne ".git" } | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
+          Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
           tree .
-          Copy-Item -Recurse -Force "$env:GITHUB_WORKSPACE/source/docs/docfx/_site/*" "$env:GITHUB_WORKSPACE/docs"
+          Copy-Item -Recurse -Force "$env:GITHUB_WORKSPACE/source/docs/docfx/_site/*" .
           tree .
         working-directory: ./docs
       # Commit
