@@ -40,6 +40,7 @@ jobs:
           } else {
             echo "::set-output name=modified:false"
           }
+        working-directory: ./docs
       # Commit
       - name: Commit to gh-pages and push
         if: steps.git-check.outputs.modified == 'true'
