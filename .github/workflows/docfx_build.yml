@@ -30,8 +30,19 @@ jobs:
       - name: Sync new content
         run: Copy-Item -Recurse -Verbose -Force "$env:GITHUB_WORKSPACE/source/docs/docfx/_site/*" .
         working-directory: ./docs
+      # Check if there are actually changes (commit will fail if there aren't)
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff-index --quiet HEAD --
+          if ($LASTEXITCODE -eq 0) {
+            echo "::set-output name=modified:true"
+          } else {
+            echo "::set-output name=modified:false"
+          }
       # Commit
       - name: Commit to gh-pages and push
+        if: steps.git-check.outputs.modified == 'true'
         run: |
           cd "$env:GITHUB_WORKSPACE/docs"
           git add -A
