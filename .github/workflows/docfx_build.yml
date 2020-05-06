@@ -25,6 +25,14 @@ jobs:
         working-directory: ./source
       # Show the site
       - name: Show site dir
-        run: dir ./docs/docsfx/_site
-        working-directory: ./source
+        run: dir ./source/docs/docfx/_site
+      # Clear the content of the docs repo, since we're going to lay down new content and want old stuff removed
+      - name: Clear docs repo
+        run: Remove-Item -Recurse -Force ./docs/* -Exclude .git
+      # Copy to the docs repo
+      - name: Copy to docs repo
+        run: Copy-Item -Recurse -Force ./source/docs/docfx/_site/* ./docs
+      # Show the copied site
+      - name: Show site dir
+        run: dir ./docs
 
