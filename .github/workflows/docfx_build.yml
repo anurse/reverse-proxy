@@ -8,9 +8,6 @@ jobs:
     name: Build
     runs-on: windows-latest
     steps:
-      # Get the GitHub Actions user?
-      - name: Get GitHub Actions User
-        run: "curl.exe --url https://api.github.com/user --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'"
       # Check out the branch that triggered this workflow to the 'source' subdirectory
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -58,4 +55,5 @@ jobs:
           git commit -m"Updated docs from commit $env:GITHUB_SHA on $env:GITHUB_REF"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin gh-pages
+          Write-Host "Git exit code: $LASTEXITCODE"
         working-directory: ./docs
